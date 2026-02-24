@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowLeft, Book } from "lucide-react";
+import { ArrowLeft, Book, ArrowRight, CheckCircle2 } from "lucide-react";
 
 export default function ArchivePage() {
     const pastBooks = [

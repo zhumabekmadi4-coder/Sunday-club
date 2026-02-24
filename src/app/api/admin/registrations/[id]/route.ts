@@ -3,10 +3,11 @@ import { getSheetByName } from '@/lib/googleSheets';
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     const { status } = await request.json();
+    const { id } = await params;
     
     const sheet = await getSheetByName('registrations');
     if (!sheet) {
@@ -15,7 +16,7 @@ export async function PATCH(
 
     // Получаем все строки и находим нужную по timestamp (используем как ID)
     const rows = await sheet.getRows();
-    const targetRow = rows.find(row => row.get('timestamp') === params.id);
+    const targetRow = rows.find(row => row.get('timestamp') === id);
 
     if (!targetRow) {
       return NextResponse.json({ error: 'Registration not found' }, { status: 404 });
@@ -34,9 +35,11 @@ export async function PATCH(
 
 export async function DELETE(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
+    
     const sheet = await getSheetByName('registrations');
     if (!sheet) {
       return NextResponse.json({ error: 'Sheet not found' }, { status: 500 });
@@ -44,7 +47,7 @@ export async function DELETE(
 
     // Получаем все строки и находим нужную по timestamp (используем как ID)
     const rows = await sheet.getRows();
-    const targetRow = rows.find(row => row.get('timestamp') === params.id);
+    const targetRow = rows.find(row => row.get('timestamp') === id);
 
     if (!targetRow) {
       return NextResponse.json({ error: 'Registration not found' }, { status: 404 });
