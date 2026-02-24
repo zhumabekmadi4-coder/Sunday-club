@@ -1,36 +1,51 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sunday Club 🏛️
 
-## Getting Started
+Книжный клуб в стиле **Dark Academia**. Платформа для управления встречами, регистрациями и контентом сайта.
 
-First, run the development server:
+## 🛠 Технологии
+- **Next.js 15** (App Router, Server Actions)
+- **Tailwind CSS v4** (Modern aesthetic)
+- **Google Sheets API** (Serverless Database)
+- **Lucide React** (Icons)
 
+## 🚀 Быстрый старт
+
+### 1. Клонирование репозитория
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/zhumabekmadi4-coder/Sunday-club.git
+cd sunday-club
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Установка зависимостей
+```bash
+npm install
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Настройка переменных окружения
+Создайте файл `.env.local` в корне проекта и заполните его данными из вашего Google Cloud Console (Service Account):
+```env
+GOOGLE_CLIENT_EMAIL="your-service-account@project.iam.gserviceaccount.com"
+GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
+GOOGLE_SHEET_ID="your-google-sheet-id"
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 4. Запуск в режиме разработки
+```bash
+npm run dev
+```
 
-## Learn More
+Откройте [http://localhost:3000](http://localhost:3000) в браузере.
 
-To learn more about Next.js, take a look at the following resources:
+## 📁 Структура проекта
+- `src/app/` — Роутинг и основные страницы (Next.js App Router).
+- `src/app/admin/` — Панель управления (CMS).
+- `src/app/register/` — Форма регистрации с интеграцией Google Sheets.
+- `src/lib/googleSheets.ts` — Хелпер для работы с базой данных Google Таблиц.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 🎨 Дизайн
+Проект выполнен в эстетике **Dark Academia**:
+- Цвета: Глубокий зеленый, бордовый, античное золото.
+- Шрифты: `Cormorant Garamond` для атмосферных заголовков.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+*Sunday Club — Место, где смыслы важнее слов.*
