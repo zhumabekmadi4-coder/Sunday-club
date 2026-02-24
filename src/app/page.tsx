@@ -3,7 +3,6 @@ import Image from "next/image";
 import { Book as BookIcon, Calendar, MapPin, ArrowRight, BookOpen, Dices, Library } from "lucide-react";
 
 export default function Home() {
-  // Статические данные для демо. В будущем — из Supabase.
   const nextMeeting = {
     date: "10 мая, 2026",
     time: "18:00",
@@ -35,78 +34,86 @@ export default function Home() {
   ];
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen text-foreground selection:bg-primary/30">
       {/* Навигация */}
-      <nav className="flex items-center justify-between px-6 py-8 md:px-12">
-        <div className="text-2xl font-serif font-bold tracking-tighter text-glow">
+      <nav className="flex items-center justify-between px-6 py-8 md:px-12 backdrop-blur-sm border-b border-border/10 sticky top-0 z-[100]">
+        <div className="text-2xl font-serif font-bold tracking-tighter text-glow flex items-center gap-2">
+          <span className="bg-primary/20 p-1 rounded text-primary border border-primary/20">SC</span>
           SUNDAY CLUB<span className="text-primary italic">.</span>
         </div>
-        <div className="flex gap-8 text-xs font-bold uppercase tracking-widest">
+        <div className="flex gap-6 md:gap-10 text-[10px] font-bold uppercase tracking-[0.2em]">
           <Link href="/archive" className="hover:text-primary transition-colors">Архив</Link>
           <Link href="/planned" className="hover:text-primary transition-colors">Планы</Link>
           <Link href="/admin" className="opacity-40 hover:opacity-100 transition-opacity">Админ</Link>
         </div>
       </nav>
 
-      <main className="flex-1 relative z-10">
+      <main className="flex-1 relative">
         {/* Hero Секция */}
-        <section className="px-6 py-20 md:px-12 md:py-32 max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
-          <div className="space-y-8 animate-in fade-in slide-in-from-left duration-1000">
-            <div>
-              <span className="text-xs font-bold text-primary uppercase tracking-widest mb-4 block">Осн. 2024</span>
-              <h1 className="text-5xl md:text-8xl font-serif font-bold leading-[0.9] text-glow">
+        <section className="px-6 py-24 md:px-12 md:py-40 max-w-7xl mx-auto flex flex-col md:grid md:grid-cols-12 gap-16 items-center">
+          <div className="md:col-span-7 space-y-10 order-2 md:order-1">
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <span className="h-[1px] w-8 bg-primary/40"></span>
+                <span className="text-[10px] font-bold text-primary uppercase tracking-[0.3em]">Established 2024</span>
+              </div>
+              <h1 className="text-5xl md:text-8xl font-serif font-bold leading-none text-glow">
                 Для тех, <br />
-                <span className="italic font-normal serif text-secondary">кто влюблен</span> <br />
+                <span className="italic font-normal text-primary">кто влюблен</span> <br />
                 в глубину слов.
               </h1>
             </div>
 
-            <p className="text-muted-foreground text-lg max-w-md leading-relaxed font-light">
+            <p className="text-muted-foreground text-lg md:text-xl max-w-lg leading-relaxed font-light font-serif italic">
               Раз в две недели мы собираемся в самом сердце города, чтобы обсудить истории, которые остаются с нами надолго после последней страницы.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
+            <div className="flex flex-col sm:flex-row gap-6 pt-4">
               <Link
                 href="/register"
-                className="bg-primary text-primary-foreground px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:opacity-90 transition-all shadow-lg shadow-primary/20"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-10 py-5 rounded-sm font-bold flex items-center justify-center gap-3 transition-all shadow-premium text-xs uppercase tracking-widest border border-primary/20"
               >
                 Присоединиться <ArrowRight className="w-4 h-4" />
               </Link>
               <Link
                 href="/archive"
-                className="border border-border/20 backdrop-blur-sm px-8 py-4 rounded-full font-bold flex items-center justify-center gap-2 hover:bg-white/5 transition-all text-sm uppercase tracking-widest"
+                className="bg-white/5 backdrop-blur-md px-10 py-5 rounded-sm font-bold flex items-center justify-center gap-2 hover:bg-white/10 transition-all text-[10px] uppercase tracking-[0.2em] border border-border/10"
               >
                 Посмотреть архив
               </Link>
             </div>
           </div>
 
-          {/* Текущая книга */}
-          <div className="relative aspect-square md:aspect-[4/5] bg-black/40 backdrop-blur-md rounded-2xl overflow-hidden animate-in fade-in slide-in-from-right duration-1000 p-8 flex flex-col justify-center border border-white/5 group shadow-2xl">
-            <div className="absolute top-0 right-0 p-8">
-              <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary">Сейчас читаем</span>
-            </div>
-
-            <div className="flex flex-col gap-8">
-              <div className="relative w-48 mx-auto aspect-[2/3] shadow-2xl transition-transform duration-500 group-hover:scale-105 group-hover:-rotate-2">
-                <Image
-                  src={nextMeeting.bookCover}
-                  alt={nextMeeting.bookTitle}
-                  fill
-                  className="object-cover rounded shadow-2xl"
-                />
-              </div>
-
-              <div className="text-center space-y-2">
-                <h2 className="text-3xl font-serif font-bold">{nextMeeting.bookTitle}</h2>
-                <div className="text-sm font-medium italic text-muted-foreground uppercase tracking-widest">
-                  автор {nextMeeting.bookAuthor}
+          {/* Текущая книга - Floating Card */}
+          <div className="md:col-span-5 order-1 md:order-2 w-full max-w-md md:max-w-none mx-auto">
+            <div className="relative group">
+              <div className="absolute -inset-4 bg-primary/5 rounded-3xl blur-2xl group-hover:bg-primary/10 transition-all"></div>
+              <div className="relative bg-card/60 backdrop-blur-xl border border-border/20 p-8 rounded-2xl shadow-premium overflow-hidden paper-texture">
+                <div className="flex justify-between items-start mb-8">
+                  <span className="text-[9px] font-bold uppercase tracking-[0.3em] text-primary/60">Reading Now</span>
+                  <div className="p-2 rounded-full bg-primary/10 text-primary animate-pulse">
+                    <BookOpen className="w-4 h-4" />
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground leading-relaxed mt-2 italic px-8">
-                  &quot;Книга, которая возвращает нас к классике, обнажая тени современного академического мира.&quot;
-                </p>
-                <div className="inline-flex items-center gap-1 text-[10px] font-bold text-primary uppercase tracking-widest mt-4 group-hover:gap-2 transition-all">
-                  Читать синопсис <ArrowRight className="w-3 h-3" />
+
+                <div className="relative w-40 mx-auto aspect-[2/3] mb-8 group-hover:scale-105 transition-transform duration-700">
+                  <div className="absolute inset-0 bg-black/40 blur-xl scale-90 translate-y-4 translate-x-4 group-hover:translate-y-6 transition-all"></div>
+                  <Image
+                    src={nextMeeting.bookCover}
+                    alt={nextMeeting.bookTitle}
+                    fill
+                    className="object-cover rounded-sm shadow-2xl relative z-10 grayscale-[0.2] group-hover:grayscale-0 transition-all "
+                  />
+                </div>
+
+                <div className="text-center space-y-3">
+                  <h2 className="text-3xl font-serif font-bold">{nextMeeting.bookTitle}</h2>
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-[0.2em]">
+                    — {nextMeeting.bookAuthor} —
+                  </p>
+                  <p className="text-[13px] text-muted-foreground/80 leading-relaxed mt-4 italic max-w-[280px] mx-auto border-t border-border/10 pt-4">
+                    &quot;Книга, которая возвращает нас к классике, обнажая тени современного академического мира.&quot;
+                  </p>
                 </div>
               </div>
             </div>
@@ -114,108 +121,159 @@ export default function Home() {
         </section>
 
         {/* Сетка информации о встречах */}
-        <section className="px-6 py-20 md:px-12 grid md:grid-cols-2 gap-12 max-w-7xl mx-auto border-t border-border/10 mt-20">
-          <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-10 border border-white/5 flex flex-col gap-6">
-            <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-primary border border-primary/20">
-              <Calendar className="w-5 h-5" />
-            </div>
-            <h3 className="text-2xl font-serif font-bold">Ближайшая встреча</h3>
-            <div className="bg-white/5 p-6 rounded-xl border border-white/10 space-y-2">
-              <p className="text-primary text-sm uppercase tracking-widest font-bold">{nextMeeting.date} @ {nextMeeting.time}</p>
-              <h4 className="text-xl font-serif font-bold">{nextMeeting.bookTitle}</h4>
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">{nextMeeting.bookAuthor}</p>
-              <div className="flex items-center gap-2 text-xs text-muted-foreground italic mt-4 pt-4 border-t border-white/5">
-                <MapPin className="w-3 h-3" /> {nextMeeting.location}
+        <section className="px-6 py-24 md:px-12 bg-white/[0.02] border-y border-border/5">
+          <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-10">
+            {/* Ближайшая встреча */}
+            <div className="bg-card/40 backdrop-blur-lg border border-border/10 rounded-3xl p-10 paper-texture group">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                  <Calendar className="w-5 h-5" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold">Ближайшая встреча</h3>
               </div>
-            </div>
-          </div>
 
-          <div className="bg-black/20 backdrop-blur-sm rounded-3xl p-10 border border-white/5 flex flex-col gap-6">
-            <div className="w-12 h-12 rounded-full bg-secondary/20 flex items-center justify-center text-primary border border-primary/20">
-              <BookIcon className="w-5 h-5" />
-            </div>
-            <h3 className="text-2xl font-serif font-bold">Планы на сезон</h3>
-            <div className="space-y-4 flex-1">
-              {upcomingMeetings.map((mtg, i) => (
-                <div key={i} className="flex justify-between items-center bg-white/5 p-4 rounded-xl border border-white/5 hover:border-primary/30 transition-colors">
-                  <div>
-                    <h4 className="font-serif font-bold text-lg">{mtg.book}</h4>
-                    <p className="text-[10px] text-muted-foreground uppercase tracking-widest">{mtg.author}</p>
+              <div className="space-y-6">
+                <div className="bg-white/5 p-8 rounded-2xl border border-border/10 hover:border-primary/20 transition-all">
+                  <div className="flex flex-col gap-1 mb-4">
+                    <span className="text-primary text-[10px] uppercase tracking-[0.3em] font-bold">{nextMeeting.date}</span>
+                    <span className="text-muted-foreground text-[10px] uppercase font-bold">at {nextMeeting.time}</span>
                   </div>
-                  <div className="text-xs font-bold text-primary bg-primary/10 px-3 py-1 rounded-full whitespace-nowrap">
-                    {mtg.date.split(',')[0]}
+                  <h4 className="text-2xl font-serif font-bold mb-1">{nextMeeting.bookTitle}</h4>
+                  <p className="text-[10px] text-muted-foreground uppercase tracking-[0.2em] mb-6">{nextMeeting.bookAuthor}</p>
+
+                  <div className="flex items-center gap-3 text-xs text-primary/60 italic pt-6 border-t border-border/5">
+                    <MapPin className="w-4 h-4 opacity-70" /> {nextMeeting.location}
                   </div>
                 </div>
-              ))}
+              </div>
             </div>
-            <Link href="/archive" className="text-xs uppercase tracking-widest text-muted-foreground hover:text-primary transition-colors flex items-center gap-2 font-bold mt-2">
-              Весь список <ArrowRight className="w-3 h-3" />
-            </Link>
+
+            {/* Планы на сезон */}
+            <div className="bg-card/40 backdrop-blur-lg border border-border/10 rounded-3xl p-10 paper-texture flex flex-col">
+              <div className="flex items-center gap-4 mb-8">
+                <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center text-primary border border-primary/20">
+                  <BookIcon className="w-5 h-5" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold">Планы на сезон</h3>
+              </div>
+
+              <div className="space-y-4 flex-1">
+                {upcomingMeetings.map((mtg, i) => (
+                  <div key={i} className="flex justify-between items-center bg-white/5 p-5 rounded-2xl border border-border/5 hover:border-primary/20 transition-all group cursor-default">
+                    <div>
+                      <h4 className="font-serif font-bold text-lg group-hover:text-primary transition-colors">{mtg.book}</h4>
+                      <p className="text-[9px] text-muted-foreground uppercase tracking-[0.2em]">{mtg.author}</p>
+                    </div>
+                    <div className="text-[9px] font-bold text-primary bg-primary/10 border border-primary/10 px-4 py-2 rounded-full uppercase tracking-widest translate-x-2 group-hover:translate-x-0 transition-transform">
+                      {mtg.date.split(',')[0]}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <Link href="/archive" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest text-muted-foreground hover:text-primary transition-all mt-8">
+                Полный архив <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
           </div>
         </section>
 
         {/* Инструменты участников */}
-        <section className="px-6 py-20 md:px-12 max-w-7xl mx-auto border-t border-border/10 mt-10">
-          <div className="text-center mb-16 space-y-4">
-            <h3 className="text-4xl font-serif font-bold">Инструменты</h3>
-            <p className="text-muted-foreground italic font-light">Эксклюзивные материалы для глубокого погружения в чтение.</p>
+        <section className="px-6 py-24 md:px-12 max-w-7xl mx-auto">
+          <div className="text-center mb-20 space-y-4">
+            <h3 className="text-4xl md:text-5xl font-serif font-bold text-glow">Инструменты</h3>
+            <p className="text-muted-foreground italic font-light font-serif">Материалы для глубокого погружения в чтение.</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
-            <Link href="/guide" className="group bg-black/20 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                <BookOpen className="w-8 h-8" />
-              </div>
-              <div>
-                <h4 className="text-xl font-serif font-bold mb-2">Reflection Guide</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">Интерактивный дневник для фиксации мыслей и подготовки к обсуждению.</p>
-              </div>
-            </Link>
-
-            <Link href="/roulette" className="group bg-black/20 backdrop-blur-sm rounded-3xl p-8 border border-white/5 hover:border-primary/50 transition-all flex flex-col items-center text-center gap-6">
-              <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center text-primary group-hover:scale-110 transition-transform">
-                <Dices className="w-8 h-8" />
-              </div>
-              <div>
-                <h4 className="text-xl font-serif font-bold mb-2">Рулетка Вопросов</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">Генератор случайных вопросов для случайных поворотов в наших беседах.</p>
-              </div>
-            </Link>
-
-            <div className="group bg-black/40 backdrop-blur-sm rounded-3xl p-8 border border-white/5 opacity-50 flex flex-col items-center text-center gap-6 relative overflow-hidden cursor-not-allowed">
-              <div className="absolute top-4 right-4 bg-primary/20 text-primary text-[8px] uppercase tracking-widest font-bold px-2 py-1 rounded">Скоро</div>
-              <div className="w-16 h-16 rounded-full bg-secondary/20 flex items-center justify-center text-primary">
-                <Library className="w-8 h-8" />
-              </div>
-              <div>
-                <h4 className="text-xl font-serif font-bold mb-2">Digital Library</h4>
-                <p className="text-xs text-muted-foreground leading-relaxed">Закрытая библиотека дополнительных материалов и статей.</p>
-              </div>
-            </div>
+            <ToolCard
+              href="/guide"
+              title="Reflection Guide"
+              desc="Интерактивный дневник для фиксации мыслей и подготовки к обсуждению."
+              icon={<BookOpen className="w-6 h-6" />}
+            />
+            <ToolCard
+              href="/roulette"
+              title="Рулетка Вопросов"
+              desc="Генератор вопросов для неожиданных поворотов в наших беседах."
+              icon={<Dices className="w-6 h-6" />}
+            />
+            <ToolCard
+              href="#"
+              title="Digital Library"
+              desc="Закрытая библиотека дополнительных материалов и статей."
+              icon={<Library className="w-6 h-6" />}
+              isLocked
+            />
           </div>
         </section>
 
         {/* FAQ Section */}
-        <section className="px-6 py-20 md:px-12 max-w-4xl mx-auto border-t border-border/10 mt-10">
+        <section className="px-6 py-24 md:px-12 max-w-4xl mx-auto border-t border-border/10">
           <div className="text-center mb-16 space-y-4">
             <h3 className="text-4xl font-serif font-bold">Частые вопросы</h3>
-            <p className="text-muted-foreground italic font-light">Всё, что нужно знать перед тем, как присоединиться к клубу.</p>
+            <p className="text-muted-foreground italic font-light font-serif">Всё, что нужно знать перед тем, как присоединиться.</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="space-y-4">
             {faqs.map((faq, i) => (
-              <div key={i} className="bg-black/20 backdrop-blur-sm rounded-2xl p-8 border border-white/5">
-                <h4 className="text-lg font-serif font-bold mb-3 text-primary-foreground">{faq.q}</h4>
-                <p className="text-sm text-muted-foreground leading-relaxed font-light">{faq.a}</p>
-              </div>
+              <details key={i} className="group bg-card/40 backdrop-blur-md rounded-2xl border border-border/10 overflow-hidden paper-texture shadow-sm select-none">
+                <summary className="flex justify-between items-center p-8 cursor-pointer list-none">
+                  <h4 className="text-[17px] font-serif font-bold pr-6 group-open:text-primary transition-colors">{faq.q}</h4>
+                  <div className="w-6 h-6 rounded-full border border-border/20 flex items-center justify-center group-open:rotate-180 transition-transform">
+                    <ArrowRight className="w-3 h-3 rotate-90" />
+                  </div>
+                </summary>
+                <div className="px-8 pb-8 text-[15px] text-muted-foreground/90 leading-relaxed font-light">
+                  {faq.a}
+                </div>
+              </details>
             ))}
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-white/5 mt-32 py-12 px-6 text-center text-muted-foreground text-[10px] uppercase tracking-[0.3em] font-bold opacity-40 italic">
-        <p>&copy; 2026 Sunday Club. По любви к литературе.</p>
+      <footer className="border-t border-border/10 py-16 px-6 text-center">
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-xl font-serif font-bold tracking-tighter text-glow opacity-80">
+            SUNDAY CLUB<span className="text-primary italic">.</span>
+          </div>
+          <p className="text-muted-foreground text-[10px] uppercase tracking-[0.5em] font-bold opacity-60 italic">
+            &copy; 2026 Sunday Club. По любви к литературе.
+          </p>
+        </div>
       </footer>
     </div>
   );
 }
+
+function ToolCard({ href, title, desc, icon, isLocked = false }: { href: string, title: string, desc: string, icon: React.ReactNode, isLocked?: boolean }) {
+  const content = (
+    <>
+      {isLocked && <div className="absolute top-6 right-6 bg-primary/20 text-primary text-[8px] uppercase tracking-widest font-bold px-3 py-1.5 rounded-sm border border-primary/20 backdrop-blur-md">Скоро</div>}
+      <div className="w-16 h-16 rounded-full bg-secondary/30 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500 border border-primary/10 shadow-glow">
+        {icon}
+      </div>
+      <div className="space-y-3">
+        <h4 className="text-xl font-serif font-bold">{title}</h4>
+        <p className="text-[13px] text-muted-foreground leading-relaxed font-light">{desc}</p>
+      </div>
+      {!isLocked && (
+        <div className="opacity-0 group-hover:opacity-100 transition-all translate-y-2 group-hover:translate-y-0 text-primary text-[10px] font-bold uppercase tracking-widest flex items-center gap-2">
+          Открыть <ArrowRight className="w-3 h-3" />
+        </div>
+      )}
+    </>
+  );
+
+  return isLocked ? (
+    <div className="relative group bg-card/20 backdrop-blur-md rounded-3xl p-10 border border-border/5 opacity-50 flex flex-col items-center text-center gap-8 cursor-not-allowed paper-texture grayscale">
+      {content}
+    </div>
+  ) : (
+    <Link href={href} className="relative group bg-card/60 backdrop-blur-xl rounded-3xl p-10 border border-border/10 hover:border-primary/40 transition-all flex flex-col items-center text-center gap-8 shadow-premium paper-texture hover:-translate-y-1 duration-500">
+      {content}
+    </Link>
+  );
+}
+

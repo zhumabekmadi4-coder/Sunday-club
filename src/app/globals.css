@@ -2,65 +2,51 @@
 
 @layer base {
   :root {
-    --background: #fdfcf7;
-    /* Warm paper ivory */
-    --foreground: #000000;
-    /* Максимально черный для лучшей контрастности */
+    --background: #fdfcf7; /* Warm paper ivory */
+    --foreground: #1a1a1a;
     --card: #ffffff;
-    --card-foreground: #000000;
-    --primary: #d4af37;
-    /* Яркий золотой цвет */
+    --card-foreground: #1a1a1a;
+    --primary: #8b4513; /* Saddle Brown */
     --primary-foreground: #fdfcf7;
-    --secondary: #8b4513;
-    /* Яркий сангрия/коричневый */
+    --secondary: #2c241d; /* Deep Oak */
     --secondary-foreground: #fdfcf7;
-    --accent: #ff6b35;
-    /* Яркий оранжево-красный */
-    --accent-foreground: #fdfcf7;
-    --muted: #e0e0e0;
-    --muted-foreground: #333333;
-    /* Более темный серый для лучшей видимости */
-    --border: #c0c0c0;
-    --radius: 0.75rem;
+    --accent: #d4af37; /* Gold */
+    --accent-foreground: #1a1a1a;
+    --muted: #e5e5e5;
+    --muted-foreground: #555555;
+    --border: #d1d1d1;
+    --radius: 0.5rem;
   }
 
   .dark {
-    /* Cozy Academia Palette - Darken & Warm Up */
-    --background: 28 25% 12%;
-    /* Deep Umber / Walnut */
-    --foreground: 36 33% 94%;
-    /* Warm Parchment */
+    /* Premium Dark Academia Palette */
+    --background: #0f0d0b; /* Deep Walnut / Ink */
+    --foreground: #f4ece1; /* Aged Parchment */
 
-    --card: 28 25% 15%;
-    --card-foreground: 36 33% 94%;
+    --card: #1a1612;
+    --card-foreground: #f4ece1;
 
-    --popover: 28 25% 12%;
-    --popover-foreground: 36 33% 94%;
+    --popover: #0f0d0b;
+    --popover-foreground: #f4ece1;
 
-    --primary: 24 85% 60%;
-    /* Ember Orange */
-    --primary-foreground: 28 25% 12%;
+    --primary: #c19a6b; /* Faded Gold / Brass */
+    --primary-foreground: #0f0d0b;
 
-    --secondary: 34 32% 18%;
-    /* Dark Oak */
-    --secondary-foreground: 36 33% 94%;
+    --secondary: #241f1a;
+    --secondary-foreground: #f4ece1;
 
-    --muted: 28 15% 20%;
-    --muted-foreground: 36 20% 85%;
-    /* Более светлый цвет для лучшей видимости в темной теме */
+    --muted: #1e1a16;
+    --muted-foreground: #a39485;
 
-    --accent: 24 85% 60%;
-    --accent-foreground: 36 33% 94%;
+    --accent: #d4af37;
+    --accent-foreground: #0f0d0b;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 60 9.1% 97.8%;
+    --destructive: #7f1d1d;
+    --destructive-foreground: #fef2f2;
 
-    --border: 28 20% 20%;
-    --input: 28 20% 20%;
-    --ring: 24 85% 60%;
-    --color-secondary: var(--secondary);
-    --color-accent: var(--accent);
-    --color-muted: var(--muted);
+    --border: #2a241e;
+    --input: #2a241e;
+    --ring: #c19a6b;
   }
 }
 
@@ -72,54 +58,57 @@
   --color-secondary: var(--secondary);
   --color-accent: var(--accent);
   --color-muted: var(--muted);
+  
+  --shadow-glow: 0 0 20px rgba(193, 154, 107, 0.15);
+  --shadow-premium: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 18px;
-  /* Увеличиваем базовый размер шрифта */
+  font-size: 16px;
+  line-height: 1.6;
 }
 
-/* Улучшение читаемости на мобильных устройствах */
 @media (max-width: 768px) {
   body {
-    font-size: 20px;
+    font-size: 17px;
   }
   
-  h1, h2, h3, h4 {
-    font-size: 1.5em;
-  }
+  h1 { font-size: 2.5rem !important; }
+  h2 { font-size: 2rem !important; }
+  h3 { font-size: 1.5rem !important; }
 }
 
-h1,
-h2,
-h3,
-h4,
-.font-serif {
+h1, h2, h3, h4, .font-serif {
   font-family: var(--font-serif);
+  letter-spacing: -0.02em;
 }
 
-/* Fireplace Animations & Classes */
-.fireplace-blur {
-  filter: blur(8px) contrast(20);
+/* Texture Overlays */
+.paper-texture {
+  position: relative;
+}
+.paper-texture::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.03;
+  pointer-events: none;
+  background-image: url("https://www.transparenttextures.com/patterns/paper-fibers.png");
 }
 
-@keyframes flicker-animation {
-
-  0%,
-  100% {
-    opacity: 0.2;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.4;
-    transform: scale(1.05);
-  }
+/* Fireplace Animations */
+@keyframes flicker-subtle {
+  0%, 100% { opacity: 0.1; transform: scale(1); }
+  50% { opacity: 0.2; transform: scale(1.02); }
 }
 
-.animate-flicker-custom {
-  animation: flicker-animation 3s infinite ease-in-out;
+.animate-flicker-subtle {
+  animation: flicker-subtle 4s infinite ease-in-out;
+}
+
+.text-glow {
+  text-shadow: 0 0 15px rgba(193, 154, 107, 0.3);
 }

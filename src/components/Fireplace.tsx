@@ -6,25 +6,25 @@ import Image from 'next/image';
 export const Fireplace = () => {
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-      {/* Premium Background Image */}
-      <div className="absolute inset-0 opacity-60">
+      {/* Premium Background Image - Subdued */}
+      <div className="absolute inset-0 opacity-40">
         <Image
           src="/assets/fireplace_bg.png"
-          alt="Cozy Fireplace with Rocking Chair"
+          alt="Cozy Fireplace"
           fill
-          className="object-cover"
+          className="object-cover grayscale-[0.2]"
           priority
         />
-        {/* Dark overlay to ensure text readability */}
-        <div className="absolute inset-0 bg-background/40 mix-blend-multiply" />
+        {/* Dark vignette to focus eye on content */}
+        <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/80" />
       </div>
 
-      {/* Atmospheric Effects Overlay */}
+      {/* Atmospheric Effects Overlay - Reduced Intensity */}
       <div className="absolute inset-0">
-        {/* Subtle flickers to give life to the static image */}
-        <div className="absolute inset-0 bg-gradient-radial from-orange-500/10 via-amber-500/5 to-transparent blur-3xl animate-flicker-custom" />
-        <div className="absolute inset-0 bg-orange-950/20 mix-blend-color-burn" />
+        <div className="absolute inset-0 bg-gradient-radial from-primary/10 via-transparent to-transparent blur-[120px] animate-flicker-subtle" />
+        <div className="absolute inset-0 bg-black/40 mix-blend-multiply" />
       </div>
     </div>
   );
 };
+
