@@ -16,6 +16,40 @@ export default function AdminDashboard() {
     const [books, setBooks] = useState<any[]>([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const updateRegistrationStatus = async (id: string, status: string) => {
+      try {
+        const response = await fetch(`/api/admin/registrations/${id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status }),
+        });
+
+        if (!response.ok) throw new Error('Failed to update registration');
+
+        // Обновляем состояние локально
+        setRegistrations(prev => prev.map(reg =>
+          reg.id === id ? { ...reg, status } : reg
+        ));
+      } catch (error) {
+        console.error('Error updating registration:', error);
+      }
+    };
+
+    const deleteRegistration = async (id: string) => {
+      try {
+        const response = await fetch(`/api/admin/registrations/${id}`, {
+          method: 'DELETE',
+        });
+
+        if (!response.ok) throw new Error('Failed to delete registration');
+
+        // Удаляем из состояния
+        setRegistrations(prev => prev.filter(reg => reg.id !== id));
+      } catch (error) {
+        console.error('Error deleting registration:', error);
+      }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -170,11 +204,26 @@ export default function AdminDashboard() {
                                             </td>
                                             <td className="px-6 py-4">
                                                 <div className="flex gap-2">
-                                                    <button className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" title="Подтвердить">
+                                                    <button
+                                                      onClick={() => updateRegistrationStatus(reg.id, 'подтвержден')}
+                                                      className="p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors"
+                                                      title="Подтвердить"
+                                                    >
                                                         <CheckCircle2 className="w-5 h-5" />
                                                     </button>
-                                                    <button className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors" title="Отклонить">
+                                                    <button
+                                                      onClick={() => updateRegistrationStatus(reg.id, 'отклонен')}
+                                                      className="p-2 text-secondary hover:bg-secondary/10 rounded-lg transition-colors"
+                                                      title="Отклонить"
+                                                    >
                                                         <XCircle className="w-5 h-5" />
+                                                    </button>
+                                                    <button
+                                                      onClick={() => deleteRegistration(reg.id)}
+                                                      className="p-2 text-destructive hover:bg-destructive/10 rounded-lg transition-colors"
+                                                      title="Удалить"
+                                                    >
+                                                        <Trash2 className="w-5 h-5" />
                                                     </button>
                                                 </div>
                                             </td>
