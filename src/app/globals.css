@@ -4,10 +4,10 @@
   :root {
     --background: #fdfcf7;
     /* Warm paper ivory */
-    --foreground: #1a1a1a;
-    /* Более темный и яркий черный */
+    --foreground: #000000;
+    /* Максимально черный для лучшей контрастности */
     --card: #ffffff;
-    --card-foreground: #1a1a1a;
+    --card-foreground: #000000;
     --primary: #d4af37;
     /* Яркий золотой цвет */
     --primary-foreground: #fdfcf7;
@@ -18,7 +18,8 @@
     /* Яркий оранжево-красный */
     --accent-foreground: #fdfcf7;
     --muted: #e0e0e0;
-    --muted-foreground: #444444;
+    --muted-foreground: #333333;
+    /* Более темный серый для лучшей видимости */
     --border: #c0c0c0;
     --radius: 0.75rem;
   }
@@ -45,7 +46,8 @@
     --secondary-foreground: 36 33% 94%;
 
     --muted: 28 15% 20%;
-    --muted-foreground: 36 15% 70%;
+    --muted-foreground: 36 20% 85%;
+    /* Более светлый цвет для лучшей видимости в темной теме */
 
     --accent: 24 85% 60%;
     --accent-foreground: 36 33% 94%;
@@ -78,6 +80,17 @@ body {
   font-family: var(--font-sans);
   font-size: 18px;
   /* Увеличиваем базовый размер шрифта */
+}
+
+/* Улучшение читаемости на мобильных устройствах */
+@media (max-width: 768px) {
+  body {
+    font-size: 20px;
+  }
+  
+  h1, h2, h3, h4 {
+    font-size: 1.5em;
+  }
 }
 
 h1,
