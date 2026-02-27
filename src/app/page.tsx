@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { getMeetings } from "@/lib/googleSheets";
 
+// Force server-side rendering on every request (prevents static build from calling Google Sheets API)
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   const allMeetings = await getMeetings();
 
