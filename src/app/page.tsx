@@ -1,22 +1,23 @@
-import Link from "next/link";
-import Image from "next/image";
 import { Book as BookIcon, Calendar, MapPin, ArrowRight, BookOpen, Dices, Library } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { getMeetings } from "@/lib/googleSheets";
 
-export default function Home() {
-  const nextMeeting = {
-    date: "10 мая, 2026",
-    time: "18:00",
-    location: "Секретная локация, Алматы",
-    bookTitle: "Таинственный сад",
-    bookAuthor: "Фрэнсис Бернетт",
+export default async function Home() {
+  const allMeetings = await getMeetings();
+
+  const nextMeeting = allMeetings.find(m => m.status === 'Reading Now') || {
+    date: "TBD",
+    time: "TBD",
+    location: "Секретная локация",
+    bookTitle: "Название книги",
+    bookAuthor: "Автор",
     bookCover: "https://images.unsplash.com/photo-1544947950-fa07a98d237f?auto=format&fit=crop&q=80&w=400",
   };
 
-  const upcomingMeetings = [
-    { date: "10 мая, 2026", book: "Таинственный сад", author: "Фрэнсис Бернетт" },
-    { date: "24 мая, 2026", book: "Скотный двор", author: "Джордж Оруэлл" },
-    { date: "7 июня, 2026", book: "Превращение", author: "Франц Кафка" },
-  ];
+  const upcomingMeetings = allMeetings
+    .filter(m => m.status === 'Upcoming')
+    .map(m => ({ date: m.date, book: m.bookTitle, author: m.bookAuthor }));
 
   const faqs = [
     {
@@ -276,4 +277,3 @@ function ToolCard({ href, title, desc, icon, isLocked = false }: { href: string,
     </Link>
   );
 }
-
