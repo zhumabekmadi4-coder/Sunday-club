@@ -3,9 +3,11 @@ import { JWT } from 'google-auth-library';
 
 const SPREADSHEET_ID = process.env.GOOGLE_SHEET_ID;
 const GOOGLE_CLIENT_EMAIL = process.env.GOOGLE_CLIENT_EMAIL;
-const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, '\n');
+// Handle different escaping formats Vercel may use for the private key
+const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY
+    ?.replace(/\\n/g, '\n')
+    ?.replace(/^"|"$/g, ''); // strip surrounding quotes if any
 
-// Конфигурация аутентификации (будет создана только если переменные окружения существуют)
 const getServiceAccountAuth = () => {
     if (!SPREADSHEET_ID || !GOOGLE_CLIENT_EMAIL || !GOOGLE_PRIVATE_KEY) {
         return null;
@@ -50,36 +52,46 @@ export interface Meeting {
 }
 
 export const getMeetings = async (): Promise<Meeting[]> => {
-    const sheet = await getSheetByName('meetings');
-    if (!sheet) return [];
+    try {
+        const sheet = await getSheetByName('meetings');
+        if (!sheet) return [];
 
-    const rows = await sheet.getRows();
-    return rows.map(row => ({
-        id: row.get('id'),
-        date: row.get('date'),
-        time: row.get('time'),
-        location: row.get('location'),
-        bookTitle: row.get('booktitle'), // Match lowercase 't' from screenshot
-        bookAuthor: row.get('bookAuthor'),
-        bookCover: row.get('bookCover'),
-        status: row.get('status') as Meeting['status'],
-        description: row.get('description'),
-    }));
+        const rows = await sheet.getRows();
+        return rows.map(row => ({
+            id: row.get('id'),
+            date: row.get('date'),
+            time: row.get('time'),
+            location: row.get('location'),
+            bookTitle: row.get('booktitle'),
+            bookAuthor: row.get('bookAuthor'),
+            bookCover: row.get('bookCover'),
+            status: row.get('status') as Meeting['status'],
+            description: row.get('description'),
+        }));
+    } catch (error) {
+        console.error('getMeetings error:', error);
+        return [];
+    }
 };
 
 export const addMeeting = async (meeting: Omit<Meeting, 'id'>) => {
-    const sheet = await getSheetByName('meetings');
-    if (!sheet) return null;
+    try {
+        const sheet = await getSheetByName('meetings');
+        if (!sheet) return null;
 
-    return await sheet.addRow({
-        id: Date.now().toString(),
-        date: meeting.date,
-        time: meeting.time,
-        location: meeting.location,
-        booktitle: meeting.bookTitle, // Match sheet header
-        bookAuthor: meeting.bookAuthor,
-        bookCover: meeting.bookCover,
-        status: meeting.status,
-        description: meeting.description || ''
-    });
+        return await sheet.addRow({
+            id: Date.now().toString(),
+            date: meeting.date,
+            time: meeting.time,
+            location: meeting.location,
+            booktitle: meeting.bookTitle,
+            bookAuthor: meeting.bookAuthor,
+            bookCover: meeting.bookCover,
+            status: meeting.status,
+            description: meeting.description || ''
+        });
+    } catch (error) {
+        console.error('addMeeting error:', error);
+        return null;
+    }
 };
