@@ -80,6 +80,6 @@ export const addMeeting = async (meeting: Omit<Meeting, 'id'>) => {
         bookAuthor: meeting.bookAuthor,
         bookCover: meeting.bookCover,
         status: meeting.status,
-        description: meeting.description
+        description: meeting.description || ''
     });
 };
